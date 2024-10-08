@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  background-color: cadetblue;
+  gap: 10px;
+  padding: 20px;
+  font-weight: 700;
+}
+
+.link {
+  color: orangered;
+  font-weight: bold;
+}
+
+.activeLink {
+  color: black;
+}

@@ -1,0 +1,8 @@
+.revieWrapper {
+  display: flex;
+  padding: 30px;
+  flex-direction: column;
+  list-style: none;
+  gap: 20px;
+  width: 90%;
+}

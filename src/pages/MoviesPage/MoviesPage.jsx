@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchMoviesByQuery } from "../../services/api";
+import { fetchAllMovies, fetchMoviesByQuery } from "../../services/api";
 import MovieList from "../../components/MovieList/MovieList";
 
 const MoviesPage = () => {
@@ -10,9 +10,20 @@ const MoviesPage = () => {
 
   useEffect(() => {
     const getMovies = async () => {
-      if (!query) {
-        setMovies([]);
-        return;
-      }
+      const data = query
+        ? await fetchMoviesByQuery(query)
+        : await fetchAllMovies();
+      console.log(data);
+      setMovies(data);
+    };
+    getMovies();
+  }, [query]);
 
-      const data = await fetchMoviesByQuery
+  return (
+    <div>
+      <MovieList movies={movies} />
+    </div>
+  );
+};
+
+export default MoviesPage;

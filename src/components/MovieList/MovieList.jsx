@@ -40,4 +40,11 @@ const MovieList = () => {
               />
               <p className={s.movieTitle}>{movie.title}</p>
             </Link>
-       
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default MovieList;

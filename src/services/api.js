@@ -32,3 +32,19 @@ export const fetchMovieReviews = async (movieId) => {
   const { data } = await instance.get(`/movie/${movieId}/reviews`);
   return data.results;
 };
+
+export const fetchPopularMovies = async () => {
+  const { data } = await instance.get("/trending/movie/day");
+  return data;
+};
+
+export const searchMovies = async (query) => {
+  console.log(`Searching movies with query: ${query}`);
+  const { data } = await instance.get(`/search/movie`, {
+    params: {
+      query,
+    },
+  });
+  console.log(data);
+  return data;
+};

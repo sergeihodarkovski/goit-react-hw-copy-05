@@ -1,41 +1,36 @@
 import s from "./MovieList.module.css";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { fetchAllMovies } from "../../services/api";
+import { fetchAllMovies, searchMovies } from "../../services/api"; // Импортируем searchMovies
 import FilterMovies from "../FilterMovies/FilterMovies";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
-  const location = useLocation();
 
-  const [searchparams, setSeanchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchparams, setSearchParams] = useSearchParams();
   const query = searchparams.get("query") ?? "";
 
   useEffect(() => {
-    const getAllMovies = async () => {
-      const data = await fetchAllMovies();
-      setMovies(data);
+    const fetchMovies = async () => {
+      const data = query ? await searchMovies(query) : await fetchAllMovies();
+      setMovies(data.results || data);
     };
-    getAllMovies();
-  }, []);
+    fetchMovies();
+  }, [query]);
 
   const handleChangeQuery = (newQuery) => {
     if (!newQuery) {
-      return setSeanchParams({});
+      return setSearchParams({});
     }
-    searchparams.set("query", newQuery);
-    setSeanchParams(searchparams);
+    setSearchParams({ query: newQuery });
   };
-
-  const filteredData = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(query.toLowerCase())
-  );
 
   return (
     <div>
       <FilterMovies handleChangeQuery={handleChangeQuery} />
       <ul className={s.moviesWrapper}>
-        {filteredData.map((movie) => (
+        {movies.map((movie) => (
           <li className={s.item} key={movie.id}>
             <Link to={`/movies/${movie.id.toString()}`} state={location}>
               <img
@@ -45,11 +40,4 @@ const MovieList = () => {
               />
               <p className={s.movieTitle}>{movie.title}</p>
             </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default MovieList;
+       

@@ -1,11 +1,18 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { fetchMoviesByQuery } from "../../services/api";
 import MovieList from "../../components/MovieList/MovieList";
 
 const MoviesPage = () => {
-  return (
-    <div>
-      <MovieList />
-    </div>
-  );
-};
+  const [movies, setMovies] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query") || "";
 
-export default MoviesPage;
+  useEffect(() => {
+    const getMovies = async () => {
+      if (!query) {
+        setMovies([]);
+        return;
+      }
+
+      const data = await fetchMoviesByQuery
